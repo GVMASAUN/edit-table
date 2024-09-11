@@ -29,21 +29,21 @@
     	<div th:if="${error}" class="alert alert-danger" role="alert">
 	        <p th:text="${error}"></p>
 	    </div>
-	<form class="container mt-4" action="/signup" method="post">
+	<form class="container mt-4" th:action="@{/signup}" th:object="${userForm}" method="post">
 		
 		<div class="mb-3">
 			<label class="form-label">Full Name</label> <input type="text"
-				class="form-control" name="name">
+				class="form-control" th:field="*{name}">
 		</div>
 		<div class="mb-3">
 			<label for="exampleInputEmail1" class="form-label">Email
 				address</label> <input type="email" class="form-control"
-				id="exampleInputEmail1" name="email">
+				id="exampleInputEmail1" th:field="*{email}">
 		</div>
 		<div class="mb-3">
 			<label for="exampleInputPassword1" class="form-label">Password</label>
 			<input type="password" class="form-control"
-				id="exampleInputPassword1" name="password">
+				id="exampleInputPassword1" th:field="*{password}">
 		</div>
 		<button type="submit" class="btn btn-primary">SignUp</button>
 	</form>
