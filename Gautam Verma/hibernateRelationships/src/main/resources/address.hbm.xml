@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class
+		name="com.codeinsight.exercise.hibernateRelationships.model.Address"
+		table="address">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="address" column="address" />
+
+		<one-to-one name="employee"
+			class="com.codeinsight.exercise.hibernateRelationships.model.Employee"
+			constrained="true" column="empId" fetch="join"></one-to-one>
+	</class>
+</hibernate-mapping>
