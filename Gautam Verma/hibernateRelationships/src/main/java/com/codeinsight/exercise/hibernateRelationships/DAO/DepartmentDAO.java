@@ -27,7 +27,6 @@ public class DepartmentDAO {
 			if (transaction != null) {
 				transaction.rollback();
 			}
-			e.printStackTrace();
 		}
 		return department;
 	}
@@ -39,8 +38,8 @@ public class DepartmentDAO {
 			transaction = session.beginTransaction();
 			session.persist(department);
 			transaction.commit();
-		} catch(Exception e) {
-			if(transaction != null) {
+		} catch (Exception e) {
+			if (transaction != null) {
 				transaction.rollback();
 			}
 			e.printStackTrace();

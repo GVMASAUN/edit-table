@@ -19,6 +19,11 @@
 			class="com.codeinsight.exercise.hibernateRelationships.model.Department"
 			column="deptId" cascade="all" not-null="true">
 		</many-to-one>
+		
+		<set name="projects" table="employee_project" inverse="false" fetch="join" cascade="all">
+			<key column="id"/>
+			<many-to-many column="projectId" class="com.codeinsight.exercise.hibernateRelationships.model.Project"></many-to-many>
+		</set>
 
 		<bag name="hobbies" table="hobby" fetch="join" inverse="true" cascade="all">
 			<key column="empId" />

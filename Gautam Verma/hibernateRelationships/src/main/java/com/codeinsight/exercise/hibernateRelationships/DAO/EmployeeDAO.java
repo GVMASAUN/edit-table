@@ -53,12 +53,12 @@ public class EmployeeDAO {
 			employee = session.get(Employee.class, employeeId);
 			Hibernate.initialize(employee.getDepartment());
 			Hibernate.initialize(employee.getHobbies());
+			Hibernate.initialize(employee.getProjects());
 			transaction.commit();
 		} catch (Exception e) {
 			if (transaction != null) {
 				transaction.rollback();
 			}
-			e.printStackTrace();
 		}
 		return employee;
 	}
@@ -70,6 +70,7 @@ public class EmployeeDAO {
 			transaction = session.beginTransaction();
 			Employee employee = session.get(Employee.class, employeeId);
 			if (employee != null) {
+				employee.setProjects(null);
 				employee.setDepartment(null);
 				session.remove(employee);
 			}

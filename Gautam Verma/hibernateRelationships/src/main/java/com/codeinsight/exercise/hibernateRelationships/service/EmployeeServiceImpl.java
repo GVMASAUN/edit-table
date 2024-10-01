@@ -1,12 +1,16 @@
 package com.codeinsight.exercise.hibernateRelationships.service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 
+import com.codeinsight.exercise.hibernateRelationships.DAO.ProjectDAO;
 import com.codeinsight.exercise.hibernateRelationships.DAO.DepartmentDAO;
 import com.codeinsight.exercise.hibernateRelationships.DAO.EmployeeDAO;
 import com.codeinsight.exercise.hibernateRelationships.model.Address;
+import com.codeinsight.exercise.hibernateRelationships.model.Project;
 import com.codeinsight.exercise.hibernateRelationships.model.Department;
 import com.codeinsight.exercise.hibernateRelationships.model.Employee;
 import com.codeinsight.exercise.hibernateRelationships.model.Hobby;
@@ -14,10 +18,12 @@ import com.codeinsight.exercise.hibernateRelationships.model.Hobby;
 public class EmployeeServiceImpl implements EmployeeService {
 	private EmployeeDAO employeeDAO;
 	private DepartmentDAO departmentDAO;
+	private ProjectDAO projectDAO;
 
-	public EmployeeServiceImpl(EmployeeDAO employeeDAO, DepartmentDAO departmentDAO) {
+	public EmployeeServiceImpl(EmployeeDAO employeeDAO, DepartmentDAO departmentDAO, ProjectDAO projectDAO) {
 		this.employeeDAO = employeeDAO;
 		this.departmentDAO = departmentDAO;
+		this.projectDAO = projectDAO;
 	}
 
 	private void createNewEmployee(Employee employee) {
@@ -31,6 +37,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		String departmentName;
 		String employeeAddress;
 		String employeeHobby;
+		String projectName;
 
 		System.out.println("Enter the details for new Employee");
 		System.out.print("Name: ");
@@ -65,6 +72,17 @@ public class EmployeeServiceImpl implements EmployeeService {
 		hobbies.add(hobby);
 		employee.setHobbies(hobbies);
 
+		System.out.println("Enter the project details: ");
+		Set<Project> projects = new HashSet<Project>();
+		Project project;
+		for (int i = 0; i < 2; ++i) {
+			System.out.print("Enter Project Name: ");
+			projectName = scanner.nextLine();
+			project = new Project(projectName);
+			projects.add(project);
+		}
+		employee.setProjects(projects);
+
 		scanner.close();
 
 		createNewEmployee(employee);
@@ -83,6 +101,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 			System.out.print("Employee Name: " + employee.getName() + "\nAddress: " + employee.getAddress().getAddress()
 					+ "\nDepartment: " + employee.getDepartment().getName() + "\nHobbies: ");
 			hobbies.forEach(hobby -> System.out.print(hobby.getName() + ", "));
+			System.out.print("\nProjects: ");
+			Set<Project> projects = employee.getProjects();
+			projects.forEach(project -> System.out.print(project.getName() + " , "));
 		} else {
 			System.out.println("Employee with this id not exists!!!");
 		}
@@ -129,8 +150,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 			if (dept != null) {
 				employee.setDepartment(dept);
+			} else {
+				System.out.println("Enter department does not exist!!! ");
 			}
 		}
+		scanner.nextLine();
 
 		System.out.print("Want to add Hobby: (y/n) ");
 		choice = scanner.nextLine();
@@ -143,6 +167,30 @@ public class EmployeeServiceImpl implements EmployeeService {
 			newHobby.setEmployee(employee);
 			employee.getHobbies().add(newHobby);
 		}
+
+		System.out.print("Want to enroll in other project? (y/n): ");
+		choice = scanner.nextLine();
+
+		if (choice.equals("y") || choice.equals("Y")) {
+			System.out.print("Enter the Project id: ");
+			Long projectId = scanner.nextLong();
+			scanner.nextLine();
+			Project project = projectDAO.getProjectById(projectId);
+
+			employee.addProject(project);
+		}
+		scanner.nextLine();
+		System.out.print("Want to get out from any project? (y/n): ");
+		choice = scanner.nextLine();
+
+		if (choice.equals("y") || choice.equals("Y")) {
+			System.out.print("Enter the Project id: ");
+			Long projectId = scanner.nextLong();
+			Project project = projectDAO.getProjectById(projectId);
+
+			employee.getProjects().remove(project);
+		}
+
 		scanner.close();
 		employeeDAO.updateEmployee(employee);
 	}
@@ -155,6 +203,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		String employeeAddress;
 		String employeeHobby;
 		Long departmentId;
+		Long projectId;
 
 		System.out.println("Enter Employee Details and existing department id: ");
 		System.out.print("Employee name: ");
@@ -183,6 +232,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 		Department department = departmentDAO.getDepartmentById(departmentId);
 		employee.setDepartment(department);
 
+		System.out.print("Enter project Id: ");
+		projectId = scanner.nextLong();
+
+		Project project = projectDAO.getProjectById(projectId);
+		Set<Project> projects = new HashSet<Project>();
+		projects.add(project);
+		employee.setProjects(projects);
+
 		scanner.close();
 		addNewEmployeeByDeptId(employee);
 	}
@@ -193,8 +250,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Enter Employee id to be updated: ");
 		employeeId = scanner.nextLong();
-		scanner.close();
-
 		updateEmployee(employeeId);
 
 	}

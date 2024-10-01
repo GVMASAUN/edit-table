@@ -1,6 +1,7 @@
 package com.codeinsight.exercise.hibernateRelationships.model;
 
 import java.util.List;
+import java.util.Set;
 
 public class Employee {
 	private Long id;
@@ -9,6 +10,7 @@ public class Employee {
 	private Address address;
 	private Department department;
 	private List<Hobby> hobbies;
+	private Set<Project> projects;
 
 	public Employee() {
 	}
@@ -51,5 +53,17 @@ public class Employee {
 
 	public void setAddress(Address address) {
 		this.address = address;
+	}
+
+	public Set<Project> getProjects() {
+		return projects;
+	}
+
+	public void setProjects(Set<Project> projects) {
+		this.projects = projects;
+	}
+
+	public void addProject(Project project) {
+		this.projects.add(project);
 	}
 }
