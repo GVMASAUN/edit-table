@@ -1,8 +1,11 @@
 package com.codeinsight.exercise.hibernateRelationships.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Address {
 	private Long id;
 	private String address;
+	@JsonIgnore
 	private Employee employee;
 
 	public String getAddress() {

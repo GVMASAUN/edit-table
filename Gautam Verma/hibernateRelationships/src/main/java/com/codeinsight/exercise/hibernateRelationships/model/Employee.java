@@ -66,4 +66,9 @@ public class Employee {
 	public void addProject(Project project) {
 		this.projects.add(project);
 	}
+	
+	@Override
+	public String toString() {
+	return "Name: " + name + "Address: " + address.getAddress();
+	}
 }

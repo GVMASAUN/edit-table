@@ -89,25 +89,28 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public void displayEmployeeData() {
+	public Employee displayEmployeeData() {
 		Long employeeId;
 		Scanner scanner = new Scanner(System.in);
 		System.out.print("Enter Employee Id: ");
 		employeeId = scanner.nextLong();
+
 		Employee employee = employeeDAO.getEmployeeById(employeeId);
 
-		if (employee != null) {
-			List<Hobby> hobbies = employee.getHobbies();
-			System.out.print("Employee Name: " + employee.getName() + "\nAddress: " + employee.getAddress().getAddress()
-					+ "\nDepartment: " + employee.getDepartment().getName() + "\nHobbies: ");
-			hobbies.forEach(hobby -> System.out.print(hobby.getName() + ", "));
-			System.out.print("\nProjects: ");
-			Set<Project> projects = employee.getProjects();
-			projects.forEach(project -> System.out.print(project.getName() + " , "));
-		} else {
-			System.out.println("Employee with this id not exists!!!");
-		}
+//		if (employee != null) {
+////			List<Hobby> hobbies = employee.getHobbies();
+////			System.out.print("Employee Name: " + employee.getName() + "\nAddress: " + employee.getAddress().getAddress()
+////					+ "\nDepartment: " + employee.getDepartment().getName() + "\nHobbies: ");
+////			hobbies.forEach(hobby -> System.out.print(hobby.getName() + ", "));
+////			System.out.print("\nProjects: ");
+////			Set<Project> projects = employee.getProjects();
+////			projects.forEach(project -> System.out.print(project.getName() + " , "));
+//			return employee;
+//		} else {
+//			System.out.println("Employee with this id not exists!!!");
+//		}
 		scanner.close();
+		return employee;
 	}
 
 	private void addNewEmployeeByDeptId(Employee employee) {

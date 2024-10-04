@@ -3,10 +3,13 @@ package com.codeinsight.exercise.hibernateRelationships.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Department {
 	private Long id;
 	private String name;
 
+	@JsonIgnore
 	private List<Employee> employees = new ArrayList<>();
 
 	public Department() {

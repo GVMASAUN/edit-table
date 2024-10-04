@@ -1,9 +1,11 @@
 package com.codeinsight.exercise.hibernateRelationships.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Hobby {
 	private Long id;
 	private String name;
-
+	@JsonIgnore
 	private Employee employee;
 
 	public Hobby(String hobby) {
