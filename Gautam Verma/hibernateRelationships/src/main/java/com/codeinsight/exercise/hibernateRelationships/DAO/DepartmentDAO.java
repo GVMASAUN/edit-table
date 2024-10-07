@@ -23,7 +23,7 @@ public class DepartmentDAO {
 			department = session.get(Department.class, departmentId);
 			Hibernate.initialize(department.getEmployees());
 			transaction.commit();
-		} catch (Exception e) {
+		} catch (Exception exception) {
 			if (transaction != null) {
 				transaction.rollback();
 			}
@@ -38,11 +38,11 @@ public class DepartmentDAO {
 			transaction = session.beginTransaction();
 			session.persist(department);
 			transaction.commit();
-		} catch (Exception e) {
+		} catch (Exception exception) {
 			if (transaction != null) {
 				transaction.rollback();
 			}
-			e.printStackTrace();
+			exception.printStackTrace();
 		}
 	}
 }

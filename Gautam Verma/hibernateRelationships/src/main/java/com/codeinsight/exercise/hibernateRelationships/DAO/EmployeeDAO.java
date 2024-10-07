@@ -21,11 +21,11 @@ public class EmployeeDAO {
 			transaction = session.beginTransaction();
 			session.persist(employee);
 			transaction.commit();
-		} catch (Exception e) {
+		} catch (Exception exception) {
 			if (transaction != null) {
 				transaction.rollback();
 			}
-			e.printStackTrace();
+			exception.printStackTrace();
 		}
 	}
 
@@ -36,11 +36,11 @@ public class EmployeeDAO {
 			transaction = session.beginTransaction();
 			session.merge(employee);
 			transaction.commit();
-		} catch (Exception e) {
+		} catch (Exception exception) {
 			if (transaction != null) {
 				transaction.rollback();
 			}
-			e.printStackTrace();
+			exception.printStackTrace();
 		}
 	}
 
@@ -55,7 +55,7 @@ public class EmployeeDAO {
 			Hibernate.initialize(employee.getHobbies());
 			Hibernate.initialize(employee.getProjects());
 			transaction.commit();
-		} catch (Exception e) {
+		} catch (Exception exception) {
 			if (transaction != null) {
 				transaction.rollback();
 			}
@@ -73,14 +73,17 @@ public class EmployeeDAO {
 				employee.setProjects(null);
 				employee.setDepartment(null);
 				session.remove(employee);
+				transaction.commit();
+				System.out.println("Employee deleted successfully!!!");
+			} else {
+				System.out.println("Employee with this ID not Exists");
 			}
-			transaction.commit();
-			System.out.println("Employee deleted successfully!!!");
-		} catch (Exception e) {
+			
+		} catch (Exception exception) {
 			if (transaction != null) {
 				transaction.rollback();
 			}
-			e.printStackTrace();
+			exception.printStackTrace();
 		}
 	}
 }

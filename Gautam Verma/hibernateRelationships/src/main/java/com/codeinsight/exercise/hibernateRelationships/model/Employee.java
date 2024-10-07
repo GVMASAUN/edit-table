@@ -11,6 +11,15 @@ public class Employee {
 	private Department department;
 	private List<Hobby> hobbies;
 	private Set<Project> projects;
+	private Long departmentId;
+
+	public Long getDepartmentId() {
+		return departmentId;
+	}
+
+	public void setDepartmentId(Long departmentId) {
+		this.departmentId = departmentId;
+	}
 
 	public Employee() {
 	}
@@ -66,9 +75,16 @@ public class Employee {
 	public void addProject(Project project) {
 		this.projects.add(project);
 	}
-	
+
 	@Override
 	public String toString() {
-	return "Name: " + name + "Address: " + address.getAddress();
+		return "Employee [id=" + id + ", name=" + name + ", address=" + address.getAddressName() + ", department="
+				+ department.getName() + ", hobbies=" + hobbies.get(0).getName() + " deptId: " + departmentId +"]";
 	}
+
+//	@Override
+//	public String toString() {
+//	return "Name: " + name + "Address: " + address.getAddress();
+//	}
+
 }

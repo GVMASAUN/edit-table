@@ -45,8 +45,8 @@ public class DepartmentServiceImpl implements DepartmentService {
 	}
 
 	@Override
-	public Department getDepartmentById(Long deptId) {
-		return departmentDAO.getDepartmentById(deptId);
+	public Department getDepartmentById(Long departmentId) {
+		return departmentDAO.getDepartmentById(departmentId);
 	}
 
 }

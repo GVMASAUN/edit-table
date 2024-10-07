@@ -12,12 +12,22 @@
 	</listener>
 	<servlet>
 		<description></description>
-		<display-name>EmployeeServlet</display-name>
-		<servlet-name>EmployeeServlet</servlet-name>
-		<servlet-class>com.codeinsight.exercise.hibernateRelationships.servlets.EmployeeServlet</servlet-class>
+		<display-name>DisplayEmpoloyee</display-name>
+		<servlet-name>DisplayEmployee</servlet-name>
+		<servlet-class>com.codeinsight.exercise.hibernateRelationships.servlets.DisplayEmployee</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>EmployeeServlet</servlet-name>
-		<url-pattern>/employee</url-pattern>
+		<servlet-name>DisplayEmployee</servlet-name>
+		<url-pattern>/employee/*</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<description></description>
+		<display-name>AddEmployee</display-name>
+		<servlet-name>AddEmployee</servlet-name>
+		<servlet-class>com.codeinsight.exercise.hibernateRelationships.servlets.AddEmployee</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AddEmployee</servlet-name>
+		<url-pattern>/employee/add-new</url-pattern>
 	</servlet-mapping>
 </web-app>

@@ -62,7 +62,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		employee.setDepartment(department);
 
 		Address address = new Address();
-		address.setAddress(employeeAddress);
+		address.setAddressName(employeeAddress);
 		employee.setAddress(address);
 
 		Hobby hobby = new Hobby();
@@ -94,22 +94,28 @@ public class EmployeeServiceImpl implements EmployeeService {
 		Scanner scanner = new Scanner(System.in);
 		System.out.print("Enter Employee Id: ");
 		employeeId = scanner.nextLong();
+		scanner.close();
 
 		Employee employee = employeeDAO.getEmployeeById(employeeId);
 
-//		if (employee != null) {
-////			List<Hobby> hobbies = employee.getHobbies();
-////			System.out.print("Employee Name: " + employee.getName() + "\nAddress: " + employee.getAddress().getAddress()
-////					+ "\nDepartment: " + employee.getDepartment().getName() + "\nHobbies: ");
-////			hobbies.forEach(hobby -> System.out.print(hobby.getName() + ", "));
-////			System.out.print("\nProjects: ");
-////			Set<Project> projects = employee.getProjects();
-////			projects.forEach(project -> System.out.print(project.getName() + " , "));
-//			return employee;
-//		} else {
-//			System.out.println("Employee with this id not exists!!!");
-//		}
-		scanner.close();
+		if (employee != null) {
+			List<Hobby> hobbies = employee.getHobbies();
+			System.out.print("Employee Name: " + employee.getName() + "\nAddress: " + employee.getAddress().getAddressName()
+					+ "\nDepartment: " + employee.getDepartment().getName() + "\nHobbies: ");
+			hobbies.forEach(hobby -> System.out.print(hobby.getName() + ", "));
+			System.out.print("\nProjects: ");
+			Set<Project> projects = employee.getProjects();
+			projects.forEach(project -> System.out.print(project.getName() + " , "));
+			return employee;
+		} else {
+			System.out.println("Employee with this id not exists!!!");
+		}
+		return employee;
+	}
+	
+	@Override
+	public Employee getEmployeeById(Long employeeId) {
+		Employee employee = employeeDAO.getEmployeeById(employeeId);
 		return employee;
 	}
 
@@ -127,6 +133,29 @@ public class EmployeeServiceImpl implements EmployeeService {
 		employeeDAO.deleteEmployee(employeeId);
 	}
 
+	private void updateEmployee(Employee employee) {
+		Employee targetEmployee = employeeDAO.getEmployeeById(employee.getId());
+
+		targetEmployee.setName(employee.getName());
+		
+		Address address = targetEmployee.getAddress();
+		address.setAddressName(employee.getAddress().getAddressName());
+		
+		Department department = departmentDAO.getDepartmentById(employee.getDepartment().getId());
+
+		if (department != null) {
+			targetEmployee.setDepartment(department);
+		} else {
+			System.out.println("Entered department does not exist!!! ");
+		}
+		targetEmployee.setHobbies(null);
+//		targetEmployee.setHobbies(employee.getHobbies());
+		targetEmployee.setProjects(null);
+//		targetEmployee.setProjects(employee.getProjects());
+		
+		employeeDAO.updateEmployee(targetEmployee);
+	}
+
 	private void updateEmployee(Long employeeId) {
 		Scanner scanner = new Scanner(System.in);
 		Employee employee = employeeDAO.getEmployeeById(employeeId);
@@ -138,7 +167,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 			choice = scanner.nextLine();
 
 			Address address = employee.getAddress();
-			address.setAddress(choice);
+			address.setAddressName(choice);
 		}
 
 		System.out.print("Want to change department: (y/n) ");
@@ -154,7 +183,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 			if (dept != null) {
 				employee.setDepartment(dept);
 			} else {
-				System.out.println("Enter department does not exist!!! ");
+				System.out.println("Entered department does not exist!!! ");
 			}
 		}
 		scanner.nextLine();
@@ -217,7 +246,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		System.out.print("Address: ");
 		employeeAddress = scanner.nextLine();
 		Address address = new Address();
-		address.setAddress(employeeAddress);
+		address.setAddressName(employeeAddress);
 		employee.setAddress(address);
 
 		System.out.print("Hobby: ");
@@ -248,6 +277,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
+	public void addNewEmployeeByDeptIdAPI(Employee employee) {
+		Long departmentId = employee.getDepartmentId();
+		Department department = departmentDAO.getDepartmentById(departmentId);
+		employee.setDepartment(department);
+
+		addNewEmployeeByDeptId(employee);
+	}
+
+	@Override
 	public void updateEmployee() {
 		Long employeeId;
 		Scanner scanner = new Scanner(System.in);
@@ -255,5 +293,20 @@ public class EmployeeServiceImpl implements EmployeeService {
 		employeeId = scanner.nextLong();
 		updateEmployee(employeeId);
 
+	}
+
+	@Override
+	public void updateEmployeeAPI(Employee employee) {
+		updateEmployee(employee);
+	}
+
+	@Override
+	public void saveEmpmloyee(Employee employee) {
+		createNewEmployee(employee);
+	}
+
+	@Override
+	public void deleteEmployeeAPI(Long employeeId) {
+		employeeDAO.deleteEmployee(employeeId);
 	}
 }

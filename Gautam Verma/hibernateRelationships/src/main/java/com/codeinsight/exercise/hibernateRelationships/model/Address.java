@@ -4,16 +4,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class Address {
 	private Long id;
-	private String address;
+	private String addressName;
 	@JsonIgnore
 	private Employee employee;
 
-	public String getAddress() {
-		return address;
+	public String getAddressName() {
+		return addressName;
 	}
 
-	public void setAddress(String address) {
-		this.address = address;
+	public void setAddressName(String address) {
+		this.addressName = address;
 	}
 
 	public Long getId() {
@@ -32,4 +32,16 @@ public class Address {
 		this.employee = employee;
 	}
 
+	@Override
+	public int hashCode() {
+		if (id == null) {
+			return addressName.hashCode();
+		}
+		return addressName.hashCode() ^ id.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return id.equals(((Address) obj).getId()) && addressName.equals(((Address) obj).getAddressName());
+	}
 }

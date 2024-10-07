@@ -38,4 +38,17 @@ public class Hobby {
 	public void setEmployee(Employee employee) {
 		this.employee = employee;
 	}
+	
+	@Override
+	public int hashCode() {
+		if (id == null) {
+			return name.hashCode();
+		}
+		return name.hashCode() ^ id.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return id.equals(((Hobby) obj).getId()) && name.equals(((Hobby) obj).getName());
+	}
 }

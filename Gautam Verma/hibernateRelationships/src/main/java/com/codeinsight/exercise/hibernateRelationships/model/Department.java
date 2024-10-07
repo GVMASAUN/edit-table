@@ -15,8 +15,8 @@ public class Department {
 	public Department() {
 	}
 
-	public Department(String deptName) {
-		this.name = deptName;
+	public Department(String departmentName) {
+		this.name = departmentName;
 		this.employees = null;
 	}
 
@@ -42,5 +42,18 @@ public class Department {
 
 	public void setEmployees(List<Employee> employees) {
 		this.employees = employees;
+	}
+	
+	@Override
+	public int hashCode() {
+		if (id == null) {
+			return name.hashCode();
+		}
+		return name.hashCode() ^ id.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return id.equals(((Department) obj).getId()) && name.equals(((Department) obj).getName());
 	}
 }
