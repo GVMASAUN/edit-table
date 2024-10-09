@@ -79,12 +79,6 @@ public class Employee {
 	@Override
 	public String toString() {
 		return "Employee [id=" + id + ", name=" + name + ", address=" + address.getAddressName() + ", department="
-				+ department.getName() + ", hobbies=" + hobbies.get(0).getName() + " deptId: " + departmentId +"]";
+				+ department.getName() + ", hobbies=" + hobbies.get(0).getName() + " deptId: " + departmentId + "]";
 	}
-
-//	@Override
-//	public String toString() {
-//	return "Name: " + name + "Address: " + address.getAddress();
-//	}
-
 }

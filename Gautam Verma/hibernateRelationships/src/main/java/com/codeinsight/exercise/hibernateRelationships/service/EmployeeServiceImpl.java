@@ -26,12 +26,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 		this.projectDAO = projectDAO;
 	}
 
-	private void createNewEmployee(Employee employee) {
+	private void createNewEmployee(Employee employee) throws Exception {
 		employeeDAO.createEmployee(employee);
 	}
 
 	@Override
-	public void createNewEmployee() {
+	public void createNewEmployee() throws Exception {
 		Scanner scanner = new Scanner(System.in);
 		String name;
 		String departmentName;
@@ -100,8 +100,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 		if (employee != null) {
 			List<Hobby> hobbies = employee.getHobbies();
-			System.out.print("Employee Name: " + employee.getName() + "\nAddress: " + employee.getAddress().getAddressName()
-					+ "\nDepartment: " + employee.getDepartment().getName() + "\nHobbies: ");
+			System.out.print(
+					"Employee Name: " + employee.getName() + "\nAddress: " + employee.getAddress().getAddressName()
+							+ "\nDepartment: " + employee.getDepartment().getName() + "\nHobbies: ");
 			hobbies.forEach(hobby -> System.out.print(hobby.getName() + ", "));
 			System.out.print("\nProjects: ");
 			Set<Project> projects = employee.getProjects();
@@ -112,18 +113,21 @@ public class EmployeeServiceImpl implements EmployeeService {
 		}
 		return employee;
 	}
-	
+
 	@Override
-	public Employee getEmployeeById(Long employeeId) {
+	public Employee getEmployeeById(Long employeeId) throws Exception {
 		Employee employee = employeeDAO.getEmployeeById(employeeId);
+		if (employee == null) {
+			throw new Exception("Employee with this id not exists!!!");
+		}
 		return employee;
 	}
 
-	private void addNewEmployeeByDeptId(Employee employee) {
-		employeeDAO.updateEmployee(employee);
+	private Long addNewEmployeeByDeptId(Employee employee) {
+		return employeeDAO.updateEmployee(employee);	
 	}
 
-	public void deleteEmployee() {
+	public void deleteEmployee() throws Exception{
 		Long employeeId;
 		Scanner scanner = new Scanner(System.in);
 		System.out.print("Enter Employee id to be deleted: ");
@@ -133,26 +137,42 @@ public class EmployeeServiceImpl implements EmployeeService {
 		employeeDAO.deleteEmployee(employeeId);
 	}
 
-	private void updateEmployee(Employee employee) {
+	public void updateEmployee(Employee employee) throws Exception {
 		Employee targetEmployee = employeeDAO.getEmployeeById(employee.getId());
 
+		if (targetEmployee == null) {
+			throw new Exception("Employee with this ID not exists");
+		}
+
 		targetEmployee.setName(employee.getName());
-		
+
 		Address address = targetEmployee.getAddress();
 		address.setAddressName(employee.getAddress().getAddressName());
-		
+
 		Department department = departmentDAO.getDepartmentById(employee.getDepartment().getId());
 
 		if (department != null) {
 			targetEmployee.setDepartment(department);
 		} else {
-			System.out.println("Entered department does not exist!!! ");
+			throw new Exception("Entered Department Does not exists!!!");
 		}
-		targetEmployee.setHobbies(null);
-//		targetEmployee.setHobbies(employee.getHobbies());
+
+		List<Hobby> hobbies = new ArrayList<>();
+		employee.getHobbies().forEach(employeeHobby -> {
+			Hobby hobby = new Hobby(employeeHobby.getName());
+			hobby.setEmployee(targetEmployee);
+			hobbies.add(hobby);
+		});
+		targetEmployee.getHobbies().clear();
+		targetEmployee.getHobbies().addAll(hobbies);
 		targetEmployee.setProjects(null);
-//		targetEmployee.setProjects(employee.getProjects());
-		
+		Set<Project> projects = new HashSet<>();
+		employee.getProjects().forEach(project -> {
+			Project tempProject = projectDAO.getProjectById(project.getProjectId());
+			projects.add(tempProject);
+		});
+		targetEmployee.setProjects(projects);
+
 		employeeDAO.updateEmployee(targetEmployee);
 	}
 
@@ -276,13 +296,21 @@ public class EmployeeServiceImpl implements EmployeeService {
 		addNewEmployeeByDeptId(employee);
 	}
 
-	@Override
-	public void addNewEmployeeByDeptIdAPI(Employee employee) {
+	public Long addEmployeeByDeptId(Employee employee) throws Exception {
 		Long departmentId = employee.getDepartmentId();
 		Department department = departmentDAO.getDepartmentById(departmentId);
+
+		if (department == null) {
+			throw new Exception("Department with this id not exists!!!");
+		}
+
+		employee.getHobbies().forEach(hobby -> {
+			hobby.setEmployee(employee);
+		});
+
 		employee.setDepartment(department);
 
-		addNewEmployeeByDeptId(employee);
+		return addNewEmployeeByDeptId(employee);
 	}
 
 	@Override
@@ -296,17 +324,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public void updateEmployeeAPI(Employee employee) {
-		updateEmployee(employee);
-	}
-
-	@Override
-	public void saveEmpmloyee(Employee employee) {
+	public void saveEmployee(Employee employee) throws Exception {
 		createNewEmployee(employee);
 	}
 
-	@Override
-	public void deleteEmployeeAPI(Long employeeId) {
+	public void deleteEmployee(Long employeeId) throws Exception {
 		employeeDAO.deleteEmployee(employeeId);
 	}
 }

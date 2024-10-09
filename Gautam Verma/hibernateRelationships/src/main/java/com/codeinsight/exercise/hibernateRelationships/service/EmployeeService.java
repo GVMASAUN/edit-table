@@ -3,23 +3,17 @@ package com.codeinsight.exercise.hibernateRelationships.service;
 import com.codeinsight.exercise.hibernateRelationships.model.Employee;
 
 public interface EmployeeService {
-	public void createNewEmployee();
+	public void createNewEmployee() throws Exception;
 
 	public void updateEmployee();
-	
-	public void updateEmployeeAPI(Employee employee);
-	
-	public void addNewEmployeeByDeptIdAPI(Employee employee);
-	
-	public void saveEmpmloyee(Employee employee);
+			
+	public void saveEmployee(Employee employee) throws Exception;
 
 	public Employee displayEmployeeData();
 	
-	public Employee getEmployeeById(Long employeeId);
+	public Employee getEmployeeById(Long employeeId) throws Exception;
 
 	public void addNewEmployeeByDeptId();
 
-	public void deleteEmployee();
-	
-	public void deleteEmployeeAPI(Long employeeId);
+	public void deleteEmployee() throws Exception;
 }

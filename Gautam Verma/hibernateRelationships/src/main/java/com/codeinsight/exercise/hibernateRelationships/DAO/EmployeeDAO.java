@@ -25,16 +25,17 @@ public class EmployeeDAO {
 			if (transaction != null) {
 				transaction.rollback();
 			}
-			exception.printStackTrace();
+			throw exception;
 		}
 	}
 
-	public void updateEmployee(Employee employee) {
+	public Long updateEmployee(Employee employee) {
 		Session session = sessionFactory.getCurrentSession();
+		Employee mergedEmployee = null;
 		Transaction transaction = null;
 		try {
 			transaction = session.beginTransaction();
-			session.merge(employee);
+			mergedEmployee = session.merge(employee);
 			transaction.commit();
 		} catch (Exception exception) {
 			if (transaction != null) {
@@ -42,6 +43,7 @@ public class EmployeeDAO {
 			}
 			exception.printStackTrace();
 		}
+		return mergedEmployee.getId();
 	}
 
 	public Employee getEmployeeById(Long employeeId) {
@@ -63,7 +65,7 @@ public class EmployeeDAO {
 		return employee;
 	}
 
-	public void deleteEmployee(Long employeeId) {
+	public void deleteEmployee(Long employeeId) throws Exception{
 		Session session = sessionFactory.getCurrentSession();
 		Transaction transaction = null;
 		try {
@@ -76,7 +78,7 @@ public class EmployeeDAO {
 				transaction.commit();
 				System.out.println("Employee deleted successfully!!!");
 			} else {
-				System.out.println("Employee with this ID not Exists");
+				throw new Exception("Employee with this Id not exists!!!");
 			}
 			
 		} catch (Exception exception) {
@@ -84,6 +86,7 @@ public class EmployeeDAO {
 				transaction.rollback();
 			}
 			exception.printStackTrace();
+			throw new Exception("Employee with this Id not exists");
 		}
 	}
 }

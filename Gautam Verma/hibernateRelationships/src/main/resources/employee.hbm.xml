@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-mapping PUBLIC
-        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 	<class
 		name="com.codeinsight.exercise.hibernateRelationships.model.Employee"
@@ -17,15 +15,18 @@
 
 		<many-to-one name="department"
 			class="com.codeinsight.exercise.hibernateRelationships.model.Department"
-			column="deptId" cascade="all" not-null="true">
+			column="deptId" cascade="all">
 		</many-to-one>
-		
-		<set name="projects" table="employee_project" inverse="false" fetch="join" cascade="all">
-			<key column="id"/>
-			<many-to-many column="projectId" class="com.codeinsight.exercise.hibernateRelationships.model.Project"></many-to-many>
+
+		<set name="projects" table="employee_project" inverse="false"
+			fetch="join" cascade="all">
+			<key column="id" />
+			<many-to-many column="projectId"
+				class="com.codeinsight.exercise.hibernateRelationships.model.Project"></many-to-many>
 		</set>
 
-		<bag name="hobbies" table="hobby" fetch="join" inverse="true" cascade="all">
+		<bag name="hobbies" table="hobby" fetch="join" inverse="true"
+			cascade="all-delete-orphan">
 			<key column="empId" />
 			<one-to-many
 				class="com.codeinsight.exercise.hibernateRelationships.model.Hobby" />

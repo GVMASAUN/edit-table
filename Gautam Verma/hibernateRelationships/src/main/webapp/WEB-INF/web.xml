@@ -14,7 +14,8 @@
 		<description></description>
 		<display-name>DisplayEmpoloyee</display-name>
 		<servlet-name>DisplayEmployee</servlet-name>
-		<servlet-class>com.codeinsight.exercise.hibernateRelationships.servlets.DisplayEmployee</servlet-class>
+		<servlet-class>
+			com.codeinsight.exercise.hibernateRelationships.servlets.DisplayEmployee</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>DisplayEmployee</servlet-name>
@@ -24,7 +25,8 @@
 		<description></description>
 		<display-name>AddEmployee</display-name>
 		<servlet-name>AddEmployee</servlet-name>
-		<servlet-class>com.codeinsight.exercise.hibernateRelationships.servlets.AddEmployee</servlet-class>
+		<servlet-class>
+			com.codeinsight.exercise.hibernateRelationships.servlets.AddEmployee</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>AddEmployee</servlet-name>
