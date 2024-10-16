@@ -1,0 +1,8 @@
+<p>home works!</p>
+<p>child property is: {{childProp}}</p>
+<input type="text" placeholder="Enter Value to be passed to parent" [(ngModel)]="val">
+<p>Two way binded value: {{val}}</p>
+<button (click)="sendToParent()">Send value to parent</button>
+<h5>values from dependency injection using constructor</h5>
+<p>{{demoObject?.name}}</p>
+<p>{{demoObject?.class}}</p>

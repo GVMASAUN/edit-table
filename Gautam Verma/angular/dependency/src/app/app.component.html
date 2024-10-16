@@ -1,0 +1,12 @@
+<h1 [ngStyle]="{'color':'blue'}">Hello from server !!!</h1>
+<app-home [childProp]="childProperty" (parentProp)="getChildProperty($event)"></app-home>
+
+<h2>Event binded property: </h2>
+<h3>{{parentProperty}}</h3>
+
+<h5>values from dependency injection using emit function</h5>
+
+<section>
+  <p>name: {{demoObject?.name}}</p>
+  <p>class: {{demoObject?.class}}</p>
+</section>
