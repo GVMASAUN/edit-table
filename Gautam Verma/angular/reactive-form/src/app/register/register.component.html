@@ -1,0 +1,45 @@
+<h1 style="color:aqua">Registration Form</h1>
+
+<form [formGroup]="myForm" (ngSubmit)="getFormValues()">
+    <h3>Username: </h3>
+    <input type="text" formControlName="name" placeholder="enter username" /><br />
+    <span *ngIf="name.invalid && name.touched">username cannot be empty</span>
+    <h3>Password: </h3>
+    <input type="password" formControlName="password" /><br />
+    <span *ngIf="password.hasError('required') && password.touched">password cannot be empty</span>
+    <span *ngIf="password.hasError('minlength')">password is small</span>
+    <h3>Gender</h3>
+    <input id="male" type="radio" value="male" formControlName="gender" name="gender">
+    <label for="male">Male</label>
+    <input id="female" type="radio" value="female" formControlName="gender" name="gender">
+    <label for="female">Female</label><br>
+
+    <h3>Select Courses:</h3>
+    <input type="checkbox" value="angular" formControlName="course">angular<br>
+    <input type="checkbox" value="java" formControlName="course">java<br>
+
+    <h3>Select your car: </h3>
+    <select name="cars" id="cars" formControlName="cars">
+        <option></option>
+        <option value="BMW">BMW</option>
+        <option value="volvo">Volvo</option>
+        <option value="saab">Saab</option>
+        <option value="mercedes">Mercedes</option>
+        <option value="audi">Audi</option>
+    </select>
+
+    <h3>Select DOB</h3>
+    <input type="date" formControlName="date">
+
+
+    <p *ngIf="myForm.invalid">Complete the form to enable button</p><br>
+    <button [disabled]="myForm.invalid" type="submit">Submit</button>
+</form>
+<p *ngIf="isSubmitted">
+    {{myForm.controls['name'].value}}<br>
+    {{myForm.controls["password"].value}}<br>
+    {{myForm.controls["gender"].value}}<br>
+    {{myForm.controls["course"].value}}<br>
+    {{myForm.controls["cars"].value}}<br>
+    {{myForm.controls["date"].value}}<br>
+</p>
