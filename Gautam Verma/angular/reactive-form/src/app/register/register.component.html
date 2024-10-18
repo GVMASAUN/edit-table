@@ -10,9 +10,9 @@
     <span *ngIf="password.hasError('minlength')">password is small</span>
     <h3>Gender</h3>
     <input id="male" type="radio" value="male" formControlName="gender" name="gender">
-    <label for="male">Male</label>
+    <label>Male</label>
     <input id="female" type="radio" value="female" formControlName="gender" name="gender">
-    <label for="female">Female</label><br>
+    <label>Female</label><br>
 
     <h3>Select Courses:</h3>
     <input type="checkbox" value="angular" formControlName="course">angular<br>
@@ -31,9 +31,24 @@
     <h3>Select DOB</h3>
     <input type="date" formControlName="date">
 
+    <h3>Add Qualifications</h3>
+    <div formArrayName="qualifications">
+        <div *ngFor="let qualification of qualifications.controls; let index = index">
+            <div [formGroupName]="index">
+                <label>Course: </label>
+                <input type="text" formControlName="course">
+                <label> Percentage: </label>
+                <input type="number" formControlName="percentage">&nbsp;&nbsp;
+                <button type="button" (click)="removeQualification(index)">Remove</button>
+            </div>
+            <br>
+        </div>
+        <button type="button" (click)="addQualification()">Add</button>
+    </div>
 
     <p *ngIf="myForm.invalid">Complete the form to enable button</p><br>
     <button [disabled]="myForm.invalid" type="submit">Submit</button>
+
 </form>
 <p *ngIf="isSubmitted">
     {{myForm.controls['name'].value}}<br>
@@ -42,4 +57,5 @@
     {{myForm.controls["course"].value}}<br>
     {{myForm.controls["cars"].value}}<br>
     {{myForm.controls["date"].value}}<br>
+    {{myForm.controls["qualifications"].value | json}}
 </p>

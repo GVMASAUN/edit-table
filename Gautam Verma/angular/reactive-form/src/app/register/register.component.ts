@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 
 
 @Component({
@@ -9,7 +9,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class RegisterComponent {
   myForm: FormGroup;
-  isSubmitted: boolean;
+  isSubmitted: boolean = false;
 
   constructor(private formBuilder: FormBuilder) {
     this.myForm = this.formBuilder.group({
@@ -18,7 +18,8 @@ export class RegisterComponent {
       gender: ['male', Validators.required],
       course: [],
       cars: [],
-      date: []
+      date: [],
+      qualifications: this.formBuilder.array([])
     });
   }
 
@@ -30,7 +31,26 @@ export class RegisterComponent {
     return this.myForm.controls["password"];
   }
 
-  getFormValues() {
+  get qualifications() {
+    return this.myForm.controls["qualifications"] as FormArray;
+  }
+
+  private createQualification(): FormGroup {
+    return this.formBuilder.group({
+      course: [''],
+      percentage: ['']
+    });
+  }
+
+  addQualification(): void {
+    this.qualifications.push(this.createQualification());
+  }
+
+  removeQualification(index: number): void {
+    this.qualifications.removeAt(index);
+  }
+
+  getFormValues(): void {
     this.isSubmitted = true;
   }
 }
