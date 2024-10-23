@@ -1,46 +1,48 @@
 <form [formGroup]="studentForm" (ngSubmit)="formSubmit()">
-    <label>Name: </label>
-    <input type=" text" placeholder="Enter Name" formControlName="name"><br>
-    <span *ngIf="name?.hasError('noAlphabet') && isSubmitted">Name should contains alphabets only</span>
-    <span *ngIf="name?.hasError('required') && isSubmitted"><br>Name should not be empty</span>
+    <label for="name">Name: </label>
+    <input id="name" type=" text" placeholder="Enter Name" formControlName="name"><br>
+    <span *ngIf="getFormControl('name')?.hasError('noAlphabet') && isSubmitted">Name should contains alphabets
+        only</span>
+    <span *ngIf="getFormControl('name')?.hasError('required') && isSubmitted"><br>Name should not be empty</span>
     <br><br>
 
-    <label>Username: </label>
-    <input type="text" placeholder="Enter Username" formControlName="username"><br>
-    <span *ngIf="username?.hasError('existingUsername') && isSubmitted">Username already exists</span>
-    <span *ngIf="username?.hasError('required') && isSubmitted"><br>Username should not be empty</span>
+    <label for="username">Username: </label>
+    <input id="username" type="text" placeholder="Enter Username" formControlName="username"><br>
+    <span *ngIf="getFormControl('username')?.hasError('existingUsername') && isSubmitted">Username already exists</span>
+    <span *ngIf="getFormControl('username')?.hasError('required') && isSubmitted"><br>Username should not be
+        empty</span>
 
     <br><br>
 
     <label>Select Gender: </label>
     <input id="male" type="radio" formControlName="gender" value="male" name="gender">
-    <label>male</label>
+    <label for="male">male</label>
     <input id="female" type="radio" formControlName="gender" value="female" name="gender">
-    <label>female</label><br>
-    <span *ngIf="gender?.hasError('required') && isSubmitted">Please select gender</span>
+    <label for="female">female</label><br>
+    <span *ngIf="getFormControl('gender')?.hasError('required') && isSubmitted">Please select gender</span>
     <br><br>
 
 
     <label>Select Age: </label>
     <select id="age" name="age" formControlName="age">
-        <option *ngFor="let item of [].constructor(100); let index = index" [value]="index+1">{{index+1}}</option>
+        <option *ngFor="let age of [].constructor(100); let index = index" [value]="index+1">{{index+1}}</option>
     </select><br>
-    <span *ngIf="age.hasError('ageRange') && isSubmitted">Enter age between range 20 to 30</span>
+    <span *ngIf="getFormControl('age').hasError('ageRange') && isSubmitted">Enter age between range 20 to 30</span>
     <br><br>
 
     <label>Email: </label>
     <input type="email" placeholder="Enter email with domainn @mydemo.com" formControlName="email"><br>
-    <span *ngIf="email?.hasError('invalidDomain') && isSubmitted">Invalid Domain</span>
-    <span *ngIf="email?.hasError('email') && isSubmitted"><br>Invalid email</span>
+    <span *ngIf="getFormControl('email')?.hasError('invalidDomain') && isSubmitted">Invalid Domain</span>
+    <span *ngIf="getFormControl('email')?.hasError('email') && isSubmitted"><br>Invalid email</span>
     <br><br>
 
     <label>Address: </label>
     <input type="text" placeholder="Enter address" formControlName="address"><br>
-    <span *ngIf="address?.hasError('minError') && isSubmitted">Enter address of more than 10
+    <span *ngIf="getFormControl('address')?.hasError('minError') && isSubmitted">Enter address of more than 10
         characters</span>
-    <span *ngIf="address?.hasError('maxError') && isSubmitted">Enter address of less than 20
+    <span *ngIf="getFormControl('address')?.hasError('maxError') && isSubmitted">Enter address of less than 20
         characters</span>
-    <span *ngIf="address?.hasError('required') && isSubmitted"><br>Address cannot be empty</span>
+    <span *ngIf="getFormControl('address')?.hasError('required') && isSubmitted"><br>Address cannot be empty</span>
 
     <br><br>
 
@@ -69,31 +71,32 @@
                     empty</span><br><br>
             </div>
         </div>
+        <span *ngIf="studentForm.controls['subjects'].hasError('invalidSize') && isSubmitted">Please enter minimum
+            5 subjects</span><br>
         <button type="button" (click)="addSubject()">Add Subject</button>
-        <span *ngIf="studentForm.controls['subjects'].value.length < 5 && isSubmitted">Please enter minimum
-            5 subjects</span>
+
     </div>
     <br><br>
     <button type="submit">Submit</button>&nbsp;&nbsp;
     <button type="button" (click)="reset()">Reset</button>
 </form>
-<p *ngIf="studentForm.valid && isSubmitted">
+<p *ngIf="studentForm.valid && isSubmitted && submitFlag">
     <label>Name: </label>
-    {{studentForm.controls['name'].value}}<br>
+    {{studentForm.value.name}}<br>
     <label>Username: </label>
-    {{studentForm.controls["username"].value}}<br>
+    {{studentForm.value.username}}<br>
     <label>Gender: </label>
-    {{studentForm.controls["gender"].value}}<br>
+    {{studentForm.value.gender}}<br>
     <label>Address: </label>
-    {{studentForm.controls["address"].value}}<br>
+    {{studentForm.value.address}}<br>
     <label>Age: </label>
-    {{studentForm.controls["age"].value}}<br>
+    {{studentForm.value.age}}<br>
     <label>Email: </label>
-    {{studentForm.controls["email"].value}}<br>
+    {{studentForm.value.email}}<br>
     <label>Subject Code </label>&nbsp;&nbsp;
     <label>Elective: </label><br>
-    <span style="color:black" *ngFor="let subject of studentForm.controls['subjects'].value">
-        {{subject.subjectcode}}&nbsp;&nbsp;&nbsp;<span *ngIf="subject.Elective != null">True</span>
-        <span *ngIf="subject.Elective == null">false</span><br>
+    <span style="color:black" *ngFor="let subject of studentForm.value.subjects">
+        {{subject.subjectcode}}&nbsp;&nbsp;&nbsp;<span *ngIf="subject.optional != null">True</span>
+        <span *ngIf="subject.optional == null">false</span><br>
     </span>
 </p>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ValidatorService } from '../validator.service';
 import { DataService } from '../data.service';
 
@@ -12,6 +12,7 @@ export class RegisterComponent implements OnInit {
   studentForm: FormGroup;
   isSubmitted: boolean;
   allSubjects: any = {};
+  submitFlag: boolean = false;
 
   constructor(private formBuilder: FormBuilder, private validatorService: ValidatorService, private dataService: DataService) {
     this.studentForm = this.formBuilder.group({
@@ -21,7 +22,7 @@ export class RegisterComponent implements OnInit {
       address: ['', [Validators.required, validatorService.addressValidator()]],
       age: ['', [Validators.required, validatorService.ageValidator()]],
       email: ['', [Validators.required, Validators.email, validatorService.emailValidator()]],
-      subjects: this.formBuilder.array([])
+      subjects: this.formBuilder.array([], { validators: validatorService.minimumSubjectValidator() })
     });
   }
 
@@ -29,31 +30,11 @@ export class RegisterComponent implements OnInit {
     return this.studentForm.controls['subjects'] as FormArray;
   }
 
-  get name() {
-    return this.studentForm.controls['name'];
+  getFormControl(controlName: string): FormControl {
+    return this.studentForm.controls[controlName] as FormControl;
   }
 
-  get username() {
-    return this.studentForm.controls['username'];
-  }
-
-  get address() {
-    return this.studentForm.controls['address'];
-  }
-
-  get email() {
-    return this.studentForm.controls['email'];
-  }
-
-  get gender() {
-    return this.studentForm.controls['gender'];
-  }
-
-  get age() {
-    return this.studentForm.controls['age'];
-  }
-
-  createSubject(): FormGroup {
+  private createSubject(): FormGroup {
     return this.formBuilder.group({
       subjectcode: ['', [Validators.required, this.validatorService.subjectValidator(this.studentForm)]],
       optional: []
@@ -71,13 +52,16 @@ export class RegisterComponent implements OnInit {
   formSubmit(): void {
     this.isSubmitted = true;
     if (this.studentForm.invalid) {
+      this.submitFlag = false;
       alert("Please enter correct data.")
+    } else {
+      this.submitFlag = true;
     }
   }
 
   reset(): void {
-    this.studentForm.reset();
     this.isSubmitted = false;
+    this.studentForm.reset();
   }
 
   ngOnInit(): void {
