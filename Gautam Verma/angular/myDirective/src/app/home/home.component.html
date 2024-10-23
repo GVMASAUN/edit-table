@@ -1,0 +1,61 @@
+<h2>This is custom attribute directive!!!</h2>
+<p>I have put a button and used the mouse enter and mouse leave listeners to toggle colors</p>
+<p>And button will change one of the toggle color</p>
+<p>Initial color is violet</p>
+<p>Initial toggle color is red and green</p>
+<button (click)="toggleColor()">click me</button>
+<p [appStyle]="color" [ngStyle]="{'background-color': 'violet'}">Sample Text</p>
+
+<h1>Checking on Custom structural directive unless which is opposite of if</h1>
+<input type="radio" [value]="true" (click)="condition = true;" name="check" />true<br>
+<input type="radio" name="check" [value]="false" (click)="condition = false;true" />false<br>
+
+<p *ngIf="condition">Here is text using if</p>
+<p *appUnless="condition">Here is text using unless</p>
+
+<h2>Inbuilt ngFor loop: </h2>
+<p *ngFor="let user of users;let index = index">
+    {{index}} | {{user.id}} | {{user.name}}
+</p>
+
+<h2>breaking implementation of ngFor loop using ng-template: </h2>
+<ng-template ngFor let-user [ngForOf]="users" let-index="index">
+    <p>
+        {{index}} | {{user.id}} | {{user.name}}
+    </p>
+</ng-template>
+
+<h2>My custom myNgFor loop: </h2>
+<p *appMyNgFor="let user of users;let index = index">
+    {{index}} | {{user.id}} | {{user.name}}
+</p>
+
+<h2>ngSwitch</h2>
+
+
+<input type="radio" name="switch" (click)="switchValue = 'hello'"> hello<br>
+<input type="radio" name="switch" (click)="switchValue = 'hey'"> hey <br>
+<input type="radio" name="switch" (click)="switchValue = 'default'"> any Random Value <br>
+
+<div [ngSwitch]="switchValue">
+    <p *ngSwitchCase="'hello'">its hello</p>
+    <p *ngSwitchCase="'hey'">its hey</p>
+    <p *ngSwitchDefault>its default</p>
+</div>
+
+<h3>Here we are using ng-container and ng-template and passing value to nyTemplateOutlet</h3>
+<ng-container *ngIf="users">
+    <ng-container *ngIf="users.length < 0">
+        <ul *ngFor="let user of users;">
+            {{user.id}} | {{user.name}}<br>
+        </ul>
+    </ng-container>
+</ng-container>
+
+<ng-template #manyUsers let-name="name">
+    <p>there are many users</p>
+    <p>one of them is {{name}}</p>
+</ng-template>
+
+<ng-container *ngTemplateOutlet="manyUsers;context:template">
+</ng-container>
