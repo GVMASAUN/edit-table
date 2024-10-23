@@ -1,0 +1,8 @@
+<h3>Top Heroes</h3>
+<ul class="heroes">
+    <li *ngFor="let hero of heroes">
+        <a routerLink="/details/{{hero.id}}">
+            <span class="name">{{hero.name}}</span>
+        </a>
+    </li>
+</ul>
