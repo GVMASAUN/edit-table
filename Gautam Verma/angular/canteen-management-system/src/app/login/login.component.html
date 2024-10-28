@@ -1,0 +1,14 @@
+<form [formGroup]="loginForm" (ngSubmit)="login()">
+    <label for="email">Email: </label>
+    <input type="email" id="email" placeholder="Enter Email" formControlName="email"><br><br>
+    <label for="password">Password: </label>
+    <input type="password" formControlName="password" id="password" placeholder="Enter password"><br><br>
+    <button type="submit">Login</button>
+</form>
+
+<p *ngIf="response?.error">
+    {{response.error}}
+</p>
+<p *ngIf="response?.message">
+    {{response.message}}
+</p>

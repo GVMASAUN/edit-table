@@ -1,0 +1,22 @@
+<form [formGroup]="registerForm" (ngSubmit)="registerUser()">
+    <label for="name">Name: </label>
+    <input type="text" id="name" placeholder="Enter Name" formControlName="name"><br><br>
+    <label for="email">Email: </label>
+    <input type="email" id="email" placeholder="Enter Email" formControlName="email"><br><br>
+    <label for="password">Password: </label>
+    <input type="password" formControlName="password" id="password"><br><br>
+    <label for="role">Role</label>
+    <select formControlName="role" id="role">
+        <option value="ROLE_USER">USER</option>
+        <option value="ROLE_ADMIN">ADMIN</option>
+    </select><br><br>
+    <label for="phone">Phone Number: </label>
+    <input type="number" formControlName="phoneNumber" id="phone"><br><br>
+    <button type="submit">Register</button>
+</form>
+<p *ngIf="response?.error">
+    {{response.error}}
+</p>
+<p *ngIf="response?.message">
+    {{response.message}}
+</p>
