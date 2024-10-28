@@ -1,5 +1,10 @@
 package com.codeinsight.exercise.DTO;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserDTO {
 	private Long userId;
 	private String name;
@@ -7,6 +12,35 @@ public class UserDTO {
 	private String password;
 	private String role;
 	private Long phoneNumber;
+	private String message;
+	private int statusCode;
+	private String error;
+	
+	
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public int getStatusCode() {
+		return statusCode;
+	}
+
+	public void setStatusCode(int statusCode) {
+		this.statusCode = statusCode;
+	}
+
+	public String getError() {
+		return error;
+	}
+
+	public void setError(String error) {
+		this.error = error;
+	}
 
 	public Long getUserId() {
 		return userId;

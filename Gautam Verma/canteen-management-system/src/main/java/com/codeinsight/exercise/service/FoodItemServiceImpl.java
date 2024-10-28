@@ -1,15 +1,16 @@
 package com.codeinsight.exercise.service;
 
-import java.util.Optional;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.codeinsight.exercise.DTO.FoodItemDTO;
+import com.codeinsight.exercise.DTO.ResponseDTO;
 import com.codeinsight.exercise.entity.FoodItem;
 import com.codeinsight.exercise.repository.FoodItemRepository;
 
-import jakarta.persistence.EntityNotFoundException;
 @Service
 public class FoodItemServiceImpl implements FoodItemService{
 
@@ -35,5 +36,20 @@ public class FoodItemServiceImpl implements FoodItemService{
 		foodItem.setItemPrice(foodItemDTO.getItemPrice());
 		
 		foodItemRepository.save(foodItem);
+	}
+
+	@Override
+	public ResponseDTO getAllFoodItems() {
+		ResponseDTO responseDTO = new ResponseDTO();
+		try {
+			List<FoodItem> foodItems = foodItemRepository.findAll();
+			responseDTO.setFoodItems(foodItems);
+			responseDTO.setMessage("Food Items fetched Successfully");
+			responseDTO.setStatusCode(200);
+		} catch(Exception exception) {
+			responseDTO.setStatusCode(500);
+			responseDTO.setError(exception.getMessage());
+		}
+		return responseDTO;
 	}
 }
