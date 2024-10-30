@@ -13,6 +13,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 
@@ -22,8 +23,8 @@ public class FoodOrder {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long orderId;
 
-	@OneToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "user_id", referencedColumnName = "userId")
+	@ManyToOne
+	@JoinColumn(name = "user_id", nullable = false)
 	private User user;
 	@Column(nullable = false)
 	private Date orderDate;

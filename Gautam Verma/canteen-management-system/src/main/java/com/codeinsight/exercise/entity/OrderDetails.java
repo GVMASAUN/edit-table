@@ -7,7 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class OrderDetails {
@@ -15,11 +15,13 @@ public class OrderDetails {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long detailId;
 
-	@OneToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "item_id", referencedColumnName = "itemId")
 	private FoodItem foodItem;
+	
 	@Column(nullable = false)
 	private int quantity;
+	
 	@Column(nullable = false)
 	private float totalPrice;
 

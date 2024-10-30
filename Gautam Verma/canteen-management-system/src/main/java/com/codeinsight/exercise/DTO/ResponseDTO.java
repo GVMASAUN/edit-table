@@ -14,6 +14,7 @@ public class ResponseDTO {
 	private String role;
 	private List<FoodItem> foodItems;
 	private String refreshToken;
+	private List<OrderDTO> foodOrders;
 	private String expirationTime;
 
 	public int getStatusCode() {
@@ -86,6 +87,14 @@ public class ResponseDTO {
 
 	public void setFoodItems(List<FoodItem> foodItems) {
 		this.foodItems = foodItems;
+	}
+
+	public List<OrderDTO> getFoodOrders() {
+		return foodOrders;
+	}
+
+	public void setFoodOrders(List<OrderDTO> foodOrders) {
+		this.foodOrders = foodOrders;
 	}
 
 }

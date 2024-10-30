@@ -10,11 +10,14 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import com.nimbusds.jose.util.StandardCharset;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
 
 @Component
 public class JwtService {
@@ -38,9 +41,19 @@ public class JwtService {
 				.expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME)).signWith(key).compact();
 	}
 
-	public boolean isTokenValid(String token, UserDetails userDetails) {
-		final String username = extractUsername(token);
-		return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+	public boolean isTokenValid(String token, UserDetails userDetails) throws JwtException{
+		try {
+			final String username = extractUsername(token);
+			return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+		}catch (ExpiredJwtException exception) {
+            throw new JwtException("Token has expired: " + exception.getMessage());
+        } catch (UnsupportedJwtException exception) {
+            throw new JwtException("Unsupported JWT: " + exception.getMessage());
+        } catch (MalformedJwtException exception) {
+            throw new JwtException("Malformed JWT: " + exception.getMessage());
+        } catch (Exception exception) {
+            throw new JwtException("JWT processing error: " + exception.getMessage());
+        }
 	}
 
 	private boolean isTokenExpired(String token) {

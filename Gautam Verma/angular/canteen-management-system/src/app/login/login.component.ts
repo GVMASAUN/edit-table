@@ -21,17 +21,24 @@ export class LoginComponent {
     });
   }
 
-  login(): void {
-    this.loginService.login(this.loginForm.value).subscribe(response => {
-      console.log(response);
-      this.response = response;
-      if (response?.error == null || response.statusCode == 200) {
-        localStorage.setItem('token', response.token)
-        localStorage.setItem('role', response.role)
-        // this.router.navigate(['/order']);
-      } else {
-        this.response = response;
-      }
+  private markAllAsTouched(): void {
+    Object.keys(this.loginForm.controls).forEach(control => {
+      this.loginForm.get(control)?.markAsTouched();
     });
+  }
+
+  login(): void {
+    if (this.loginForm.valid) {
+      this.loginService.login(this.loginForm.value).subscribe(response => {
+        this.response = response;
+        if (response?.error == null || response.statusCode == 200) {
+          localStorage.setItem('currentUser', JSON.stringify(response));
+          this.router.navigate(['/orders']);
+        }
+      });
+    } else {
+      this.markAllAsTouched();
+    }
+
   }
 }

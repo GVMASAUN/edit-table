@@ -15,8 +15,17 @@ public class UserDTO {
 	private String message;
 	private int statusCode;
 	private String error;
-	
-	
+
+	public UserDTO() {
+	}
+
+	public UserDTO(String role, Long userId, String email, String name, Long phoneNumber) {
+		this.role = role;
+		this.userId = userId;
+		this.email = email;
+		this.name = name;
+		this.phoneNumber = phoneNumber;
+	}
 
 	public String getMessage() {
 		return message;

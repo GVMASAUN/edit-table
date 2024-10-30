@@ -23,15 +23,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class SecurityConfiguration {
 
 	@Autowired
-	UserServiceImpl userService;
+	private UserServiceImpl userService;
+	
 	@Autowired
-	JwtAuthFilter jwtAuthFilter;
+	private JwtAuthFilter jwtAuthFilter;
 
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.csrf(csrf -> csrf.disable()).cors(Customizer.withDefaults())
 				.authorizeHttpRequests(
-						(authorize) -> authorize.requestMatchers("/login").permitAll().anyRequest().authenticated())
+						(authorize) -> authorize.requestMatchers("/register","/login").permitAll()
+						.requestMatchers("/item").hasAnyRole("ADMIN","USER")
+						.requestMatchers("/user").hasAnyRole("ADMIN")
+						.requestMatchers("/order").hasAnyRole("ADMIN","USER")
+						.requestMatchers("/order/**").hasAnyRole("ADMIN","USER")
+						.anyRequest().authenticated())
 				.sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authenticationProvider(authenticationProvider())
 				.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
@@ -50,10 +56,6 @@ public class SecurityConfiguration {
 		daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
 		return daoAuthenticationProvider;
 	}
-
-	// this bean is here because i want centralized authentication manager which can
-	// authenticate when i provide
-	// username and password to it as a UsernamePasswordAuthenticationToken
 
 	@Bean
 	AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)

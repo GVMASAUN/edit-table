@@ -14,34 +14,36 @@ import com.codeinsight.exercise.DTO.UserDTO;
 import com.codeinsight.exercise.service.FoodItemService;
 import com.codeinsight.exercise.service.UserService;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
+
 
 @RestController
 public class LoginController{
 	
 	@Autowired
-	UserService userService;
-	@Autowired
-	FoodItemService foodItemService;
-
-	@Autowired
-	PasswordEncoder passwordEncoder;
+	private UserService userService;
 	
 	@Autowired
-	AuthenticationManager authenticationManager;
+	private FoodItemService foodItemService;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private AuthenticationManager authenticationManager;
 	
 	@PostMapping("/login")
 	public ResponseEntity<ResponseDTO> login(@RequestBody UserDTO userDTO) {
-		System.out.println("Hello from login " + userDTO.toString());
 		return ResponseEntity.ok(userService.login(userDTO, authenticationManager));
 	}
 	
 	@PostMapping("/register")
 	public ResponseEntity<ResponseDTO> registerUser(@RequestBody UserDTO userDTO) {
-		System.out.println(userDTO.toString());
 		return ResponseEntity.ok(userService.registerUser(userDTO, passwordEncoder));
 	}
 	
@@ -51,14 +53,38 @@ public class LoginController{
 	}
 	
 	@PostMapping("/item")
-	public String addFoodItem(@RequestBody FoodItemDTO foodItemDTO) {
-		foodItemService.createFoodItem(foodItemDTO);
-		return "Food Item Added Successfully";
+	public ResponseEntity<ResponseDTO> addFoodItem(@RequestBody FoodItemDTO foodItemDTO) {
+		return ResponseEntity.ok(foodItemService.createFoodItem(foodItemDTO));
 	}
 	
 	@PutMapping("/item")
-	public String updateFoodItem(@RequestBody FoodItemDTO foodItemDTO) {
-		foodItemService.updateItem(foodItemDTO);
-		return "Food Item updated Successfully";
+	public ResponseEntity<ResponseDTO> updateFoodItem(@RequestBody FoodItemDTO foodItemDTO) {
+		return ResponseEntity.ok(foodItemService.updateItem(foodItemDTO));
 	}
+	
+	@DeleteMapping("/item/{id}")
+	public ResponseEntity<ResponseDTO> deleteFoodItem(@PathVariable String id) throws Exception{
+		return ResponseEntity.ok(foodItemService.deleteItem(Long.parseLong(id)));
+	}
+	
+	@GetMapping("/user")
+	public ResponseEntity<List<UserDTO>> getUsers() {
+		return ResponseEntity.ok(userService.getUsers());
+	}
+	
+	@PutMapping("user/{id}")
+	public ResponseEntity<ResponseDTO> updateUser(@PathVariable String id, @RequestBody UserDTO userDTO) {		
+		return ResponseEntity.ok(userService.updateUser(Long.parseLong(id),userDTO,passwordEncoder));
+	}
+	
+	@DeleteMapping("/user/{id}")
+	public ResponseEntity<ResponseDTO> deleteUser(@PathVariable String id){
+		return ResponseEntity.ok(userService.deleteUser(Long.parseLong(id)));
+	}
+	
+	@GetMapping("/user/{id}")
+	public ResponseEntity<UserDTO> getUserById(@PathVariable String id){
+		return ResponseEntity.ok(userService.getUserById(Long.parseLong(id)));
+	}
+	
 }
