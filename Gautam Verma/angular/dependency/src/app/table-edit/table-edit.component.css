@@ -1,0 +1,15 @@
+.error{
+    color: red;
+}
+
+:host ::ng-deep .p-inputtext {
+    color: green;
+    border: 2px solid green;
+    border-radius: 10px;
+}
+
+:host ::ng-deep .p-inputtext:focus:enabled,
+:host ::ng-deep .p-inputtext:hover {
+    box-shadow: none;
+    border: 2px solid green;
+}
