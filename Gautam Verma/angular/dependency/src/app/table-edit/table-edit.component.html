@@ -10,80 +10,22 @@
         </ng-template>
         <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex" let-columns="columns">
             <tr *ngIf="selected === rowData" [formGroup]="rowData">
-                <!-- <td>{{rowIndex}}</td> -->
                 <td *ngFor="let column of columns">
-                    <div class="p-inputtext-sm p-input-filled">
-                        <input *ngIf="column.field === 'propcol1'" type="text" pInputText aria-describedby="name-help"
-                            formControlName='field1' />
-                        <div *ngIf="column.field === 'propcol1' && rowData.get('field1')?.invalid && rowData.get('field1')?.touched"
-                            class="error">
-                            <small *ngIf="rowData.get('field1')?.errors?.['required']" id="name-help"
-                                class="p-invalid">Name is
-                                required.</small>
-                            <small *ngIf="rowData.get('field1')?.errors?.['minlength']" id="name-help"
-                                class="p-invalid">Name must be
-                                at least 3
-                                characters
-                                long.</small>
-                            <small *ngIf="rowData.get('field1')?.errors?.['pattern']" id="name-help"
-                                class="p-invalid">Name should
-                                contain only
-                                alphabets.</small>
-                        </div>
-
-                        <input *ngIf="column.field === 'propcol2'" type="text" pInputText formControlName='field2' />
-                        <div *ngIf="column.field === 'propcol2' && rowData.get('field2')?.invalid && rowData.get('field2')?.touched"
-                            class="error">
-                            <small *ngIf="rowData.get('field2')?.errors?.['required']">phone number is required.</small>
-                            <small *ngIf="rowData.get('field2')?.errors?.['pattern']">Enter only 10 numbers between 0-9
-                            </small>
-                        </div>
-
-                        <input *ngIf="column.field === 'propcol3'" type="text" pInputText formControlName='field3' />
-                        <div *ngIf="column.field === 'propcol3' && rowData.get('field3')?.invalid && rowData.get('field3')?.touched"
-                            class="error">
-                            <small *ngIf="rowData.get('field3')?.errors?.['required']">Email is required.</small>
-                            <small *ngIf="rowData.get('field3')?.errors?.['email']">Please enter valid email
-                            </small>
-                        </div>
-
-                        <input *ngIf="column.field === 'propcol4'" type="text" pInputText formControlName='field4' />
-                        <div *ngIf="column.field === 'propcol4' && rowData.get('field4')?.invalid && rowData.get('field4')?.touched"
-                            class="error">
-                            <small *ngIf="rowData.get('field4')?.errors?.['required']">Email is required.</small>
-                            <small *ngIf="rowData.get('field4')?.errors?.['email']">Please enter valid email
-                            </small>
-                        </div>
-
-                        <input *ngIf="column.field === 'propcol5'" type="text" pInputText formControlName='field5' />
-                        <div *ngIf="column.field === 'propcol5' && rowData.get('field5')?.invalid && rowData.get('field5')?.touched"
-                            class="error">
-                            <small *ngIf="rowData.get('field5')?.errors?.['required']">Email is required.</small>
-                            <small *ngIf="rowData.get('field5')?.errors?.['email']">Please enter valid email
-                            </small>
-                        </div>
-
-                        <input *ngIf="column.field === 'propcol6'" type="text" pInputText formControlName='field6' />
-                        <div *ngIf="column.field === 'propcol6' && rowData.get('field6')?.invalid && rowData.get('field6')?.touched"
-                            class="error">
-                            <small *ngIf="rowData.get('field6')?.errors?.['required']">Email is required.</small>
-                            <small *ngIf="rowData.get('field6')?.errors?.['email']">Please enter valid email
-                            </small>
-                        </div>
+                    <input type="text" [formControlName]="column.field">
+                    <div class="error" *ngIf="rowData.get(column.field)?.invalid && rowData.get(column.field)?.touched">
+                        <small *ngIf="rowData.get(column.field).hasError('required')">Field Required</small>
+                        <small
+                            *ngIf="rowData.get(column.field).invalid != rowData.get(column.field).hasError('required')">Invalid
+                            Field</small>
                     </div>
                 </td>
-                <p-button type="button" icon="pi pi-check" (click)="selected=null"></p-button>
+                <p-button type="button" [disabled]="!rowData.valid" icon="pi pi-check" (click)="save()"></p-button>
             </tr>
             <tr *ngIf="selected !== rowData" [formGroup]="rowData">
-                <td>{{rowData.get('field1')?.value}}</td>
-                <td>{{rowData.get('field2')?.value}}</td>
-                <td>{{rowData.get('field3')?.value}}</td>
-                <td>{{rowData.get('field4')?.value}}</td>
-                <td>{{rowData.get('field5')?.value}}</td>
-                <td>{{rowData.get('field6')?.value}}</td>
-                <p-button type="button" icon="pi pi-pencil" (click)="selected=rowData"></p-button>
+                <td *ngFor="let column of columns">{{rowData.get(column.field)?.value}}</td>
+                <p-button type="button" icon="pi pi-pencil" (click)="edit(rowData)"></p-button>
             </tr>
         </ng-template>
     </p-table>
-    <button>submit</button>
+    <p-button type="submit" [disabled]="!mainForm.valid">submit</p-button>
 </form>

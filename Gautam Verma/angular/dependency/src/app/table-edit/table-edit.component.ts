@@ -12,7 +12,7 @@ export class TableEditComponent {
   tableItems: any;
   mainForm!: FormGroup;
   formGroupArray!: FormArray;
-  public selected: any;
+  selected: FormGroup = this.formBuilder.group({});
 
 
   constructor(private dataService: DataService, private formBuilder: FormBuilder) {
@@ -30,24 +30,51 @@ export class TableEditComponent {
     this.tableItems?.forEach((item: any) => {
       this.formGroupArray.push(
         this.formBuilder.group({
-          field1: [item.propcol1, [Validators.required, Validators.minLength(3), Validators.pattern("^[a-zA-Z ]+$")]],
-          field2: [item.propcol2, [Validators.required, Validators.pattern("^[0-9]{10}$")]],
-          field3: [item.propcol3, [Validators.required, Validators.email]],
-          field4: [item.propcol4, [Validators.required, Validators.email]],
-          field5: [item.propcol5, [Validators.required, Validators.email]],
-          field6: [item.propcol6, [Validators.required, Validators.email]]
+          propcol1: [item.propcol1, [Validators.required, Validators.minLength(3), Validators.pattern("^[a-zA-Z ]+$")]],
+          propcol2: [item.propcol2, [Validators.required, Validators.pattern("^[0-9]{10}$")]],
+          propcol3: [item.propcol3, [Validators.required, Validators.email]],
+          propcol4: [item.propcol4, [Validators.required, Validators.email]],
+          propcol5: [item.propcol5, [Validators.required, Validators.email]],
+          propcol6: [item.propcol6, [Validators.required, Validators.email]]
         })
       );
     });
-    // this.formGroupArray.disable();
+    this.tableItems?.forEach((item: any) => {
+      this.formGroupArray.push(
+        this.formBuilder.group({
+          propcol1: [item.propcol1, [Validators.required, Validators.minLength(3), Validators.pattern("^[a-zA-Z ]+$")]],
+          propcol2: [item.propcol2, [Validators.required, Validators.pattern("^[0-9]{10}$")]],
+          propcol3: [item.propcol3, [Validators.required, Validators.email]],
+          propcol4: [item.propcol4, [Validators.required, Validators.email]],
+          propcol5: [item.propcol5, [Validators.required, Validators.email]],
+          propcol6: [item.propcol6, [Validators.required, Validators.email]]
+        })
+      );
+    }); this.tableItems?.forEach((item: any) => {
+      this.formGroupArray.push(
+        this.formBuilder.group({
+          propcol1: [item.propcol1, [Validators.required, Validators.minLength(3), Validators.pattern("^[a-zA-Z ]+$")]],
+          propcol2: [item.propcol2, [Validators.required, Validators.pattern("^[0-9]{10}$")]],
+          propcol3: [item.propcol3, [Validators.required, Validators.email]],
+          propcol4: [item.propcol4, [Validators.required, Validators.email]],
+          propcol5: [item.propcol5, [Validators.required, Validators.email]],
+          propcol6: [item.propcol6, [Validators.required, Validators.email]]
+        })
+      );
+    });
   }
 
-  enable(rowData: FormGroup): void {
-    rowData.enable();
+  edit(rowData: FormGroup): void {
+    if (this.selected.valid) {
+      this.selected = rowData;
+    }
+  }
+
+  save(): void {
+    this.selected = this.formBuilder.group({});
   }
 
   submit(): void {
     console.log(this.mainForm.value);
-    // console.log(this.formGroupArray.controls);
   }
 }
