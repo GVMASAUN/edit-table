@@ -1,5 +1,29 @@
 .error{
+    position:absolute;
+    bottom: -3px;
+    left: 0;
+    right: 0;
+    font-size: 12px;
     color: red;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.error small {
+    display: block;
+    text-align: center;
+    margin-bottom: 2px;
+}
+
+.p-table td {
+    padding: 8px;
+    position: relative;
+}
+
+.cell-container {
+    position: relative;
+    align-items: center;
+    justify-content: space-between;
 }
 
 :host ::ng-deep .p-inputtext {

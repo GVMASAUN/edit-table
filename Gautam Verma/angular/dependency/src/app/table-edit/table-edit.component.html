@@ -1,6 +1,6 @@
 <form [formGroup]="mainForm" (ngSubmit)="submit()">
-    <p-table [columns]="tableColumns" [value]="formGroupArray.controls" styleClass="p-datatable-gridlines"
-        [tableStyle]="{ 'min-width': '60rem' }" [rows]=tableItems.length>
+    <p-table *ngIf="initFlag" [columns]="tableColumns" [value]="[1]" styleClass="p-datatable-gridlines"
+        [tableStyle]="{ 'min-width': '60rem' }" [rows]="tableItems.length">
         <ng-template pTemplate="header" let-columns>
             <tr>
                 <th *ngFor="let column of columns">
@@ -8,24 +8,48 @@
                 </th>
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex" let-columns="columns">
-            <tr *ngIf="selected === rowData" [formGroup]="rowData">
-                <td *ngFor="let column of columns">
-                    <input type="text" [formControlName]="column.field">
-                    <div class="error" *ngIf="rowData.get(column.field)?.invalid && rowData.get(column.field)?.touched">
-                        <small *ngIf="rowData.get(column.field).hasError('required')">Field Required</small>
-                        <small
-                            *ngIf="rowData.get(column.field).invalid != rowData.get(column.field).hasError('required')">Invalid
-                            Field</small>
-                    </div>
-                </td>
-                <p-button type="button" [disabled]="!rowData.valid" icon="pi pi-check" (click)="save()"></p-button>
-            </tr>
-            <tr *ngIf="selected !== rowData" [formGroup]="rowData">
-                <td *ngFor="let column of columns">{{rowData.get(column.field)?.value}}</td>
-                <p-button type="button" icon="pi pi-pencil" (click)="edit(rowData)"></p-button>
-            </tr>
+        <ng-template pTemplate="body" let-columns="columns">
+            <ng-container *ngFor="let rowData of dataRows; let index = 'index'; trackBy:trackById">
+                <tr *ngIf="selected === rowData" [formGroup]="rowData">
+                    <td *ngFor="let column of columns" class="cell-container">
+                        <input type="text" [readOnly]="selected === rowData" [formControlName]="column.field"
+                            class="input-field">
+                        {{rowData.get(column.field)?.invalid}}
+                        {{rowData.get(column.field)?.touched}}
+                        <div class="error"
+                            *ngIf="rowData.get(column.field)?.invalid && rowData.get(column.field)?.touched">
+                            <small *ngIf="rowData.get(column.field).hasError('required')">Field Required</small>
+                            <small
+                                *ngIf="rowData.get(column.field).invalid != rowData.get(column.field).hasError('required')">Invalid
+                                Field
+                            </small>
+                            <small *ngIf="rowData.get(column.field)?.hasError('backendError')">
+                                {{ rowData.get(column.field)?.errors?.backendError }}
+                            </small>
+                        </div>
+                        {{rowData.get(column.field)?.errors | json}}
+                        <div class="error">
+                            <small *ngIf="rowData.get(column.field).hasError('backendError')">
+                                {{ rowData.get(column.field)?.errors?.backendError }}
+                            </small>
+                        </div>
+                    </td>
+                    <p-button type="button" [disabled]="!rowData.valid" icon="pi pi-check" (click)="save()"></p-button>
+                </tr>
+                <tr *ngIf="selected !== rowData" [formGroup]="rowData">
+                    <td *ngFor="let column of columns" class="cell-container">
+                        {{rowData.get(column.field)?.value}}
+                        {{rowData.get(column.field)?.errors | json}}
+                        <div class="error" *ngIf="rowData.get(column.field)?.invalid">
+                            <small *ngIf="rowData.get(column.field).hasError('backendError')">
+                                {{ rowData.get(column.field)?.errors?.backendError }}
+                            </small>
+                        </div>
+                    </td>
+                    <p-button type="button" icon="pi pi-pencil" (click)="edit(rowData)"></p-button>
+                </tr>
+            </ng-container>
         </ng-template>
     </p-table>
-    <p-button type="submit" [disabled]="!mainForm.valid">submit</p-button>
+    <p-button type="submit" [disabled]="!mainForm.valid || (selected !== null)">submit</p-button>
 </form>
