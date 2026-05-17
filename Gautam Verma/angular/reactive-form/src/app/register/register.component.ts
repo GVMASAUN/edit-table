@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { Component, KeyValueDiffers } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormArray, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 
 
 @Component({
@@ -13,14 +13,23 @@ export class RegisterComponent {
 
   constructor(private formBuilder: FormBuilder) {
     this.myForm = this.formBuilder.group({
-      name: ['', Validators.required],
+      name: ['', [Validators.required, this.nameValidator()]],
       password: ['', [Validators.required, Validators.minLength(3)]],
-      gender: ['male', Validators.required],
+      gender: [],
       course: [],
       cars: [],
       date: [],
       qualifications: this.formBuilder.array([])
     });
+  }
+
+  nameValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+      const hasDigitCase = /[0-9]+/.test(value);
+
+      return hasDigitCase ? { containsDigit: true } : null;
+    }
   }
 
   get name() {

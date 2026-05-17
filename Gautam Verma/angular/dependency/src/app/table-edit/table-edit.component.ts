@@ -61,33 +61,38 @@ export class TableEditComponent {
   }
 
   edit(rowData: any): void {
+    debugger;
     if (!this.selected) {
       this.selected = rowData;
     }
-    debugger;
-    // this.patchErrors(rowData);
+    rowData.get('first_name').setValue("Hey");
+    this.patchErrors(rowData);
+    console.log(rowData);
   }
 
-  // private patchErrors(group: FormGroup): void {
-  //   const item = this.responseData.find((i: { id: number, errors?: { [key: string]: string } }) => i.id === group.value.id);
-  //   if (item.errors) {
-  //     for (let field in item.errors) {
-  //       if (item.errors.hasOwnProperty(field)) {
-  //         const control = group.get(field);
-  //         if (control) {
-  //           control.setErrors({
-  //             backendError: item.errors[field]
-  //           });
-  //           control.markAsDirty();
-  //           control.markAsTouched();
-  //           // control.disable();
-  //           // control.updateValueAndValidity();
-  //         }
+  private patchErrors(group: FormGroup): void {
+    debugger;
+    const item = this.responseData.find((i: { id: number, errors?: { [key: string]: string } }) => i.id === group.value.id);
+    if (item.errors) {
+      for (let field in item.errors) {
+        if (item.errors.hasOwnProperty(field)) {
+          const control = group.get(field);
+          if (control) {
+            control.setErrors({
+              backendError: item.errors[field]
+            });
+            control.markAsDirty();
+            control.markAsTouched();
+            // // control.disable();
+            control.updateValueAndValidity();
+            // control.up
+          }
 
-  //       }
-  //     }
-  //   }
-  // }
+        }
+      }
+      group.updateValueAndValidity();
+    }
+  }
 
   private patchResponse(responseData: any): void {
     for (let iterator = 0; iterator < responseData.length; ++iterator) {
@@ -100,13 +105,13 @@ export class TableEditComponent {
           if (item.errors.hasOwnProperty(field)) {
             const control = group.get(field);
             if (control) {
+
               control.setErrors({
                 backendError: item.errors[field]
               });
-              control.markAsDirty();
+              // control.markAsDirty();
               // control.markAsTouched();
               // control.disable();
-              // control.updateValueAndValidity();
             }
 
           }
@@ -124,7 +129,7 @@ export class TableEditComponent {
   }
 
   submit(): void {
-    console.log(this.mainForm.value);
+    // console.log(this.mainForm);
     this.patchResponse(this.dataService.responseData);
   }
 }

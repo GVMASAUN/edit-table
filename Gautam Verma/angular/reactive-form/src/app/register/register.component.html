@@ -4,6 +4,7 @@
     <h3>Username: </h3>
     <input type="text" formControlName="name" placeholder="enter username" /><br />
     <span *ngIf="name.invalid && name.touched">username cannot be empty</span>
+    <span *ngIf="name.hasError('containsDigit')">Digits not allowed</span>
     <h3>Password: </h3>
     <input type="password" formControlName="password" /><br />
     <span *ngIf="password.hasError('required') && password.touched">password cannot be empty</span>

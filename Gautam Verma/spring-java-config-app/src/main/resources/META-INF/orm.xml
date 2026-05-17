@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<orm:entity-mappings
+    xmlns:orm="http://xmlns.jcp.org/xml/ns/persistence/orm"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm
+                        https://www.oracle.com/webfolder/technetwork/jsc/xml/ns/persistence/orm_2_1.xsd"
+    version="2.1">
+
+    <orm:entity class="com.codeinsight.exercise.user.User">
+        <orm:table name="user"/>
+        <orm:attributes>
+            <orm:id name="id">
+                <orm:column name="id"/>
+            </orm:id>
+            <orm:basic name="name">
+                <orm:column name="name"/>
+            </orm:basic>
+            <orm:basic name="email">
+                <orm:column name="email"/>
+            </orm:basic>
+            <orm:basic name="password">
+                <orm:column name="password"/>
+            </orm:basic>
+        </orm:attributes>
+    </orm:entity>
+
+</orm:entity-mappings>

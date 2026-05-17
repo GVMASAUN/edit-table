@@ -12,8 +12,7 @@
             <ng-container *ngFor="let rowData of dataRows; let index = 'index'; trackBy:trackById">
                 <tr *ngIf="selected === rowData" [formGroup]="rowData">
                     <td *ngFor="let column of columns" class="cell-container">
-                        <input type="text" [readOnly]="selected === rowData" [formControlName]="column.field"
-                            class="input-field">
+                        <input type="text" [readonly]="true" [formControlName]="column.field" class="input-field">
                         {{rowData.get(column.field)?.invalid}}
                         {{rowData.get(column.field)?.touched}}
                         <div class="error"
@@ -34,7 +33,8 @@
                             </small>
                         </div>
                     </td>
-                    <p-button type="button" [disabled]="!rowData.valid" icon="pi pi-check" (click)="save()"></p-button>
+                    <p-button [id]="index+'button'" role="button" type="button" [disabled]="!rowData.valid"
+                        icon="pi pi-check" (click)="save()"></p-button>
                 </tr>
                 <tr *ngIf="selected !== rowData" [formGroup]="rowData">
                     <td *ngFor="let column of columns" class="cell-container">

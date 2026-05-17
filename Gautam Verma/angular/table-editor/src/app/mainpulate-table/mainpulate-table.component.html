@@ -1,0 +1,44 @@
+<form [formGroup]="productForm">
+    <p-table [value]="products">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Product Name</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Actions</th>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-product>
+            <tr>
+                <td>
+                    <p-inputText formControlName="name" [(ngModel)]="product.name" [style]="{'width':'100%'}">
+                    </p-inputText>
+                    <!-- <div *ngIf="name?.invalid && name?.touched" class="error">
+                        <small *ngIf="name?.errors?.['required']">Product Name is required.</small>
+                        <small *ngIf="name?.errors?.['minlength']">Product Name must be at least 3 characters
+                            long.</small>
+                    </div> -->
+                </td>
+                <td>
+                    <p-inputText formControlName="category" [(ngModel)]="product.category" [style]="{'width':'100%'}">
+                    </p-inputText>
+                    <!-- <div *ngIf="category?.invalid && category?.touched" class="error">
+                        <small *ngIf="category?.errors?.['required']">Category is required.</small>
+                    </div> -->
+                </td>
+                <td>
+                    <p-inputText formControlName="price" [(ngModel)]="product.price" [style]="{'width':'100%'}">
+                    </p-inputText>
+                    <!-- <div *ngIf="price?.invalid && price?.touched" class="error">
+                        <small *ngIf="price?.errors?.['required']">Price is required.</small>
+                        <small *ngIf="price?.errors?.['pattern']">Price must be a valid number.</small>
+                    </div> -->
+                </td>
+                <!-- <td>
+                    <button pButton type="button" label="Save""></button>
+                </td> -->
+            </tr>
+        </ng-template>
+    </p-table>
+</form>

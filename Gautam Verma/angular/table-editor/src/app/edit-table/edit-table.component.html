@@ -1,0 +1,24 @@
+<form [formGroup]="mainForm" (ngSubmit)="submit()">
+    <p-table [columns]="tableColumns" [value]="formGroupArray.controls" [rows]=tableItems.length>
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th *ngFor="let column of columns">
+                    {{column.header}}
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr [formGroup]="rowData">
+                <td *ngFor="let column of columns">
+                    <input *ngIf="column.field === 'propcol1'" pInputText formControlName='field1' />
+                    <input *ngIf="column.field === 'propcol2'" pInputText formControlName='field2' />
+                    <input *ngIf="column.field === 'propcol3'" pInputText formControlName='field3' />
+                    <input *ngIf="column.field === 'propcol4'" pInputText formControlName='field4' />
+                    <input *ngIf="column.field === 'propcol5'" pInputText formControlName='field5' />
+                    <input *ngIf="column.field === 'propcol6'" pInputText formControlName='field6' />
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <button>submit</button>
+</form>
